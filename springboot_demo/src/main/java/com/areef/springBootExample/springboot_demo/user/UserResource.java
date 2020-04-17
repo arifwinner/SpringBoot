@@ -4,9 +4,8 @@ import java.net.URI;
 import java.util.List;
 
 import javax.validation.Valid;
-
+import static org.springframework.hateoas.server.mvc.ControllerLinkBuilder.*;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.web.ServerProperties.Tomcat.Resource;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -15,8 +14,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
-
 import org.springframework.hateoas.*;
+import org.springframework.hateoas.server.mvc.ControllerLinkBuilder;
 
 import com.areef.springBootExample.springboot_demo.post.Posts;
 
@@ -32,11 +31,16 @@ public class UserResource {
 	}
 
 	@GetMapping("/users/{id}")
-	public User findUser(@PathVariable int id) {
+	public EntityModel<User> findUser(@PathVariable int id) {
 		User user = userDAOService.findOne(id);
 		if (user == null)
 			throw new UserNotFoundException("id-" + id);
-		return user;
+		
+		EntityModel<User> resource = new EntityModel<User>(user);
+				ControllerLinkBuilder linkTo = linkTo(methodOn(this.getClass()).getAllUsers());
+				
+				resource.add(linkTo.withRel("all-users"));
+		return resource;
 	}
 
 	@PostMapping("/users")
