@@ -1,11 +1,16 @@
 package com.areef.springBootExample.springboot_demo.user;
 
+import static org.springframework.hateoas.mvc.ControllerLinkBuilder.linkTo;
+import static org.springframework.hateoas.mvc.ControllerLinkBuilder.methodOn;
+
 import java.net.URI;
 import java.util.List;
 
 import javax.validation.Valid;
-import static org.springframework.hateoas.server.mvc.ControllerLinkBuilder.*;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.hateoas.Resource;
+import org.springframework.hateoas.mvc.ControllerLinkBuilder;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -14,8 +19,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
-import org.springframework.hateoas.*;
-import org.springframework.hateoas.server.mvc.ControllerLinkBuilder;
 
 import com.areef.springBootExample.springboot_demo.post.Posts;
 
@@ -31,17 +34,24 @@ public class UserResource {
 	}
 
 	@GetMapping("/users/{id}")
-	public EntityModel<User> findUser(@PathVariable int id) {
+	public Resource<User> findUser(@PathVariable int id) {
 		User user = userDAOService.findOne(id);
 		if (user == null)
 			throw new UserNotFoundException("id-" + id);
-		
-		EntityModel<User> resource = new EntityModel<User>(user);
-				ControllerLinkBuilder linkTo = linkTo(methodOn(this.getClass()).getAllUsers());
-				
-				resource.add(linkTo.withRel("all-users"));
+
+		Resource<User> resource = new Resource<User>(user);
+		ControllerLinkBuilder linkTo = linkTo(methodOn(this.getClass()).getAllUsers());
+		resource.add(linkTo.withRel("all-users"));
 		return resource;
 	}
+
+	/*
+	 * @GetMapping("/users/{id}") public User findUser(@PathVariable int id) { User
+	 * user = userDAOService.findOne(id); if (user == null) throw new
+	 * UserNotFoundException("id-" + id);
+	 * 
+	 * return user; }
+	 */
 
 	@PostMapping("/users")
 	public ResponseEntity<Object> addUser(@Valid @RequestBody User user) {
@@ -53,8 +63,7 @@ public class UserResource {
 		return ResponseEntity.created(location).build();
 
 	}
-	
-	
+
 	@GetMapping("/users/{id}/posts")
 	public List<Posts> findPosts(@PathVariable int id) {
 		List<Posts> posts = userDAOService.findAllPosts(id);
@@ -62,12 +71,10 @@ public class UserResource {
 			throw new UserNotFoundException("Noithing to show");
 		return posts;
 	}
-	
-	
+
 	@DeleteMapping("/users/{id}")
 	public void deleteUser(@PathVariable int id) {
 		userDAOService.deleteUser(id);
 	}
-	
-	
+
 }

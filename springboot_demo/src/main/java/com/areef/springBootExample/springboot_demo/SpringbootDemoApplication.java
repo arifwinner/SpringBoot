@@ -12,7 +12,7 @@ import org.springframework.web.servlet.LocaleResolver;
 import org.springframework.web.servlet.i18n.AcceptHeaderLocaleResolver;
 import org.springframework.web.servlet.i18n.SessionLocaleResolver;
 
-@SpringBootApplication
+//@SpringBootApplication
 public class SpringbootDemoApplication {
 
 	public static void main(String[] args) {

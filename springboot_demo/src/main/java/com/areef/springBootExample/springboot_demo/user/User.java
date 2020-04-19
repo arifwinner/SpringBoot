@@ -7,11 +7,19 @@ import javax.validation.constraints.Size;
 
 import com.areef.springBootExample.springboot_demo.post.Posts;
 
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
+
+@ApiModel(description = "User application Demo")
 public class User {
 
 	public Integer id;
+	
+	@ApiModelProperty(notes = "Name should contains atleast 2 characters")
 	@Size(min = 2, message = "Name should contains more than 2 characters")
 	public String name;
+	
+	@ApiModelProperty(notes = "Birthday should not be future date")
 	public Date dob;
 	public List<Posts> posts;
 

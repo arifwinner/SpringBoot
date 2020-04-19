@@ -24,12 +24,11 @@ public class HelloWorldController {
 		return "Hello";
 	}
 	
-	@GetMapping(path = "/hello-world")
-	public String helloWorld2()
-	{
-		return messageSource.getMessage("good.morning.message", null, LocaleContextHolder.getLocale());
-	}
-
+	/*
+	 * @GetMapping(path = "/hello-world") public String helloWorld2() { return
+	 * messageSource.getMessage("good.morning.message", null,
+	 * LocaleContextHolder.getLocale()); }
+	 */
 	@GetMapping(path = "/hello-world-bean")
 	public HelloWorldBean helloWorldBean()
 	{
