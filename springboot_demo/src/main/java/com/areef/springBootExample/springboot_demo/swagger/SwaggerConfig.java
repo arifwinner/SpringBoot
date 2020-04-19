@@ -1,4 +1,4 @@
-package com.areef.springBootExample.springboot_demo;
+package com.areef.springBootExample.springboot_demo.swagger;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
