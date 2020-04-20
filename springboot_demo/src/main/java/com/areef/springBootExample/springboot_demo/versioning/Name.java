@@ -6,9 +6,6 @@ public class Name {
 	String lastName;
 	
 	
-	public Name() {
-		super();
-	}
 	public Name(String firstNmae, String lastName) {
 		super();
 		this.firstNmae = firstNmae;
